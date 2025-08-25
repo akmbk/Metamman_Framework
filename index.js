@@ -4,5 +4,5 @@ function handleSignUp() {
 }
 
 function handleLogin() {
-  window.location.href = "/sub/login.html";
+  window.location.href = "./Metamman_Framework/sub/login.html";
 }
