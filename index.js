@@ -1,8 +1,11 @@
 function handleSignUp() {
-  alert('Sign Up clicked!');
-  // Add your sign-up logic here
+	
+	window.location.href = "./sub/signup.html";
+	
 }
 
 function handleLogin() {
+	
   window.location.href = "./sub/login.html";
+
 }
