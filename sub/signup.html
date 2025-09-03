@@ -27,6 +27,17 @@
       margin-top: 5px;
       box-sizing: border-box;
     }
+    input[type="radio"] {
+      width: auto;
+      margin-right: 5px;
+    }
+    .radio-group {
+      margin-top: 10px;
+    }
+    .radio-group label {
+      display: inline-block;
+      margin-right: 20px;
+    }
     button {
       margin-top: 20px;
       padding: 10px;
@@ -57,7 +68,7 @@
       <option value="">--Select--</option>
       <option value="male">Male</option>
       <option value="female">Female</option>
-	  <option value="notdisclosed">Not to be disclosed</option>
+      <option value="notdisclosed">Not to be disclosed</option>
       <option value="other">Other</option>
     </select>
 
@@ -72,6 +83,18 @@
 
     <label for="confirm_password">Confirm Password:</label>
     <input type="password" id="confirm_password" name="confirm_password" minlength="6" required>
+
+    <label>Signup as:</label>
+    <div class="radio-group">
+      <label>
+        <input type="radio" id="server" name="role" value="server" required>
+        Server
+      </label>
+      <label>
+        <input type="radio" id="client" name="role" value="client">
+        Client
+      </label>
+    </div>
 
     <button type="submit">Sign Up</button>
   </form>
