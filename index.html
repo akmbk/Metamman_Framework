@@ -1,59 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Metamman Framework</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 100px;
-      background-color: #f4f4f4;
-    }
+    <meta charset="UTF-8" />
+    <title>Java Render Signal</title>
 
-    h1 {
-      color: #333;
-    }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f172a;
+            color: #e5e7eb;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    .btn {
-      margin: 10px;
-      padding: 12px 24px;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
+        .card {
+            background: #020617;
+            padding: 30px;
+            border-radius: 12px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+        }
 
-    .signup-btn {
-      background-color: #4CAF50;
-      color: white;
-    }
+        h2 {
+            margin-bottom: 20px;
+        }
 
-    .signup-btn:hover {
-      background-color: #45a049;
-    }
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
 
-    .login-btn {
-      background-color: #2196F3;
-      color: white;
-    }
+        button:hover {
+            background: #1d4ed8;
+        }
 
-    .login-btn:hover {
-      background-color: #1976D2;
-    }
-  </style>
+        .response {
+            margin-top: 20px;
+            padding: 10px;
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            min-height: 24px;
+            font-size: 15px;
+            color: #38bdf8;
+        }
+    </style>
 </head>
+
 <body>
+    <div class="card">
+        <h2>Java Render Test</h2>
 
-  <h1>Metamman Framework</h1>
-  <button class="btn signup-btn" onclick="handleSignUp()">Sign Up</button>
-  <button class="btn login-btn" onclick="handleLogin()">Login</button>
+        <button onclick="sendPost()">Send POST</button>
 
-  <!-- Link to external JavaScript -->
-  <script src="index.js"></script>
+        <div class="response" id="responseBox">
+            Waiting for response...
+        </div>
+    </div>
+
+    <script>
+        function sendPost() {
+            const responseBox = document.getElementById("responseBox");
+            responseBox.textContent = "Sending request...";
+
+            fetch("https://YOUR_RENDER_URL_HERE", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "text/plain"
+                },
+                body: "Hello from frontend"
+            })
+            .then(response => response.text())
+            .then(data => {
+                responseBox.textContent = "Server says: " + data;
+            })
+            .catch(error => {
+                responseBox.textContent = "Error connecting to server";
+                console.error(error);
+            });
+        }
+    </script>
 </body>
 </html>
-
-
