@@ -73,11 +73,7 @@
             responseBox.textContent = "Sending request...";
 
             fetch("https://metamman-server.onrender.com/hello/", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "text/plain"
-                },
-                body: "Hello from frontend"
+                method: "GET"
             })
             .then(response => response.text())
             .then(data => {
@@ -91,6 +87,7 @@
     </script>
 </body>
 </html>
+
 
 
 
