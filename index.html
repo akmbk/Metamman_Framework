@@ -72,9 +72,7 @@
             const responseBox = document.getElementById("responseBox");
             responseBox.textContent = "Sending request...";
 
-            fetch("https://metamman-server.onrender.com/hello/", {
-                method: "GET"
-            })
+            fetch("https://metamman-server.onrender.com/hello/")
             .then(response => response.text())
             .then(data => {
                 responseBox.textContent = "Server says: " + data;
@@ -87,6 +85,7 @@
     </script>
 </body>
 </html>
+
 
 
 
