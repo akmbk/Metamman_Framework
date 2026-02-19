@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login & Signup - Offline Ready</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        /* Base Reset to replace Bootstrap Offline */
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #18783080, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Container & Card */
+        .auth-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+            width: 90%;
+            max-width: 420px;
+        }
+
+        .auth-header {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-container { padding: 2rem; }
+
+        /* Form Elements */
+        .mb-3 { margin-bottom: 1rem; }
+        .form-label { 
+            display: block; 
+            margin-bottom: .5rem; 
+            font-size: 0.9rem; 
+            color: #444;
+        }
+        .form-control {
+            display: block;
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
+            border: 1px solid #ced4da;
+            border-radius: 8px;
+            transition: border-color 0.2s;
+        }
+        .form-control:focus {
+            outline: none;
+            border-color: #6c63ff;
+        }
+
+        /* Buttons & Links */
+        .btn {
+            cursor: pointer;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+            border: none;
+            transition: 0.3s;
+        }
+        .btn-primary {
+            background: #6c63ff;
+            color: white;
+        }
+        .btn-primary:hover { background: #5848d6; }
+
+        .toggle-link {
+            cursor: pointer;
+            color: #6c63ff;
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .toggle-link:hover { text-decoration: underline; }
+
+        .text-center { text-align: center; }
+        .mt-3 { margin-top: 1rem; }
+        .d-flex { display: flex; }
+        .justify-content-between { justify-content: space-between; }
+        .align-items-center { align-items: center; }
+
+        .hidden { display: none; }
+        
+        .form-check { display: flex; align-items: center; gap: 8px; }
+        .form-check-input { cursor: pointer; width: 18px; height: 18px; }
+    </style>
+</head>
+<body>
+
+<div class="auth-card">
+    <div class="auth-header">
+        <h3 id="formTitle" style="margin:0;">Login</h3>
+    </div>
+
+    <div class="form-container">
+
+        <form id="loginForm" action="/login" method="post">
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <div class="mb-3 d-flex justify-content-between align-items-center">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="remember" name="remember">
+                    <label class="form-label" for="remember" style="margin:0;">Remember me</label>
+                </div>
+                <a href="#" class="toggle-link">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+
+            <p class="text-center mt-3" style="font-size: 0.9rem;">
+                Don’t have an account? 
+                <span class="toggle-link" onclick="toggleForms()">Sign up</span>
+            </p>
+        </form>
+
+        <form id="signupForm" class="hidden" action="/signup" method="post">
+            <div class="mb-3">
+                <label class="form-label">Account Name</label>
+                <input type="text" name="username" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" id="password" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" id="confirmPassword" class="form-control" required>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input class="form-check-input" type="checkbox" id="terms" required>
+                <label class="form-label" for="terms" style="margin:0;">
+                    I agree to the Terms & Conditions
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Account</button>
+
+            <p class="text-center mt-3" style="font-size: 0.9rem;">
+                Already have an account? 
+                <span class="toggle-link" onclick="toggleForms()">Login</span>
+            </p>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    function toggleForms() {
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const title = document.getElementById('formTitle');
+
+        loginForm.classList.toggle('hidden');
+        signupForm.classList.toggle('hidden');
+
+        title.textContent = loginForm.classList.contains('hidden') ? 'Sign Up' : 'Login';
+    }
+
+    // Password match validation
+    document.getElementById("signupForm").addEventListener("submit", function (e) {
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        if (password !== confirmPassword) {
+            e.preventDefault();
+            alert("Passwords do not match!");
+        }
+    });
+</script>
+
+</body>
+</html>

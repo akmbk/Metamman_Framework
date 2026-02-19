@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Keyword Highlighter</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-color: #020617;
+            overflow: hidden; /* Prevent body scroll */
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow-y: auto; /* This is where the scroll happens */
+        }
+
+        /* Twin styling for the illusion */
+        textarea, .highlighted-text {
+            width: 100%;
+            min-height: 100%; /* Ensure it covers the whole container */
+            font-family: 'monospace';
+            font-size: 16px;
+            line-height: 1.5;
+            padding: 20px;
+            margin: 0;
+            box-sizing: border-box;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: none;
+            outline: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        textarea {
+            z-index: 2;
+            color: transparent;
+            background: transparent;
+            caret-color: white;
+            resize: none;
+            overflow: hidden; /* The container handles the scrolling */
+        }
+
+        .highlighted-text {
+            z-index: 1;
+            color: #ffffff;
+            pointer-events: none;
+            display: block;
+        }
+
+        .highlight {
+            color: #22c55e; /* A nicer green */
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="scrollContainer">
+        <div id="highlightedText" class="highlighted-text"></div>
+        <textarea id="editor" spellcheck="false" placeholder="Start coding..."></textarea>
+    </div>
+
+    <script src="text_space.js"></script>
+</body>
+</html>
