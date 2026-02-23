@@ -1,6 +1,7 @@
 [[redirects]]
   from = "/api/"
-  to = "https://metamman-server.onrender.com"
+  to = MAIN_URL
   status = 200
 
   force = true
+
