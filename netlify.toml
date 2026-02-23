@@ -1,8 +1,9 @@
 [[redirects]]
-  from = "/api/"
+  from = "/api/*"
   to = "URL_PLACEHOLDER/:splat"
   status = 200
   force = true
+
 
 
 
