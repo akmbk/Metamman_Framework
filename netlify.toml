@@ -1,9 +1,10 @@
 [[redirects]]
   from = "/api/"
-  to = "${MAIN_URL}"
+  to = "URL_PLACEHOLDER"
   status = 200
 
   force = true
+
 
 
 
