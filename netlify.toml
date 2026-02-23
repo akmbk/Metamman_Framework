@@ -1,5 +1,6 @@
 [[redirects]]
-  from = "/api/*"
-  to = "URL_PLACEHOLDER/:splat"
+  from = "/api/"
+  to = "https://metamman-server.onrender.com"
   status = 200
+
   force = true
