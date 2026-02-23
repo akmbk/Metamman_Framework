@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Metamman Framework",
   "scripts": {
-    "build": "sed -i \"s|URL_PLACEHOLDER|${MAIN_URL}|g\" ./netlify.toml"
+    "start": "sed -i \"s|URL_PLACEHOLDER|${MAIN_URL}|g\" ./netlify.toml"
   },
   "dependencies": {}
+
 }
