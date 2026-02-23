@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "Metamman Framework",
   "scripts": {
-    "build": "echo 'DEBUG: Variable is' $MAIN_URL && sed -i \"s|URL_PLACEHOLDER|${MAIN_URL}|g\" ./netlify.toml && cat netlify.toml"
+    "prebuild": "sed -i \"s|URL_PLACEHOLDER|${MAIN_URL}|g\" ./netlify.toml"
   },
   "dependencies": {}
 
 }
+
 
 
