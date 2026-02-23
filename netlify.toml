@@ -1,7 +1,8 @@
 [[redirects]]
   from = "/api/"
-  to = MAIN_URL
+  to = "MAIN_URL"
   status = 200
 
   force = true
+
 
