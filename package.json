@@ -1,0 +1,9 @@
+{
+  "name": "metamman-framework",
+  "version": "1.0.0",
+  "description": "Metamman Frontend",
+  "scripts": {
+    "start": "sed -i \"s|RENDER_URL_PLACEHOLDER|${RENDER_URL}|g\" netlify.toml"
+  },
+  "dependencies": {}
+}
