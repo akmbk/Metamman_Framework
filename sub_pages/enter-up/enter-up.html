@@ -105,15 +105,15 @@
 
     <div class="form-container">
 
-        <form id="loginForm" action="/login" method="post">
+        <form id="loginForm" action="https://mtmmnfw.netlify.app/login" method="post">
             <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" required>
+                <label class="form-label">Account Name</label>
+                <input name="accname" class="form-control" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Password</label>
-                <input type="password" name="password" class="form-control" required>
+                <input type="password" name="password" class="form-control">
             </div>
 
             <div class="mb-3 d-flex justify-content-between align-items-center">
@@ -121,10 +121,10 @@
                     <input class="form-check-input" type="checkbox" id="remember" name="remember">
                     <label class="form-label" for="remember" style="margin:0;">Remember me</label>
                 </div>
-                <a href="#" class="toggle-link">Forgot password?</a>
+                <a href="#" class="toggle-link" onclick="forgotCheck()">Forgot password?</a>
             </div>
 
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="loginup" class="btn btn-primary">Login</button>
 
             <p class="text-center mt-3" style="font-size: 0.9rem;">
                 Don’t have an account? 
@@ -132,10 +132,10 @@
             </p>
         </form>
 
-        <form id="signupForm" class="hidden" action="/signup" method="post">
+        <form id="signupForm" class="hidden" action="https://mtmmnfw.netlify.app/api/signup/" method="post">
             <div class="mb-3">
                 <label class="form-label">Account Name</label>
-                <input type="text" name="username" class="form-control" required>
+                <input type="text" name="account_name" class="form-control" required>
             </div>
 
             <div class="mb-3">
@@ -172,7 +172,24 @@
 </div>
 
 <script>
-    function toggleForms() {
+	
+	async function forgotCheck() {
+		const form=document.forms["loginForm"];
+		const input=form.elements["accname"];
+		const val=input.value.trim();
+		if(val==="") {
+			alert('Please fill Account Name section, and Try Again');
+		} else {
+			const data={user: val};
+			const response = await fetch('https://mtmmnfw.netlify.app/passreset/', {
+				method: 'POST',
+				body: JSON.stringify(data)
+			});
+			
+		}
+	}
+	
+	function toggleForms() {
         const loginForm = document.getElementById('loginForm');
         const signupForm = document.getElementById('signupForm');
         const title = document.getElementById('formTitle');
@@ -182,7 +199,49 @@
 
         title.textContent = loginForm.classList.contains('hidden') ? 'Sign Up' : 'Login';
     }
+	
+	window.toggleForms=toggleForms;
+	
+	function upHash(message) {
+		// 1. String to Bytes (The 'Sutham' Encoding)
+		const msgUint8 = new TextEncoder().encode(message);                           
+		
+		// 2. The ALU Operation (SHA-256)
+		const hashBuffer = crypto.subtle.digest('SHA-256', msgUint8);           
+	
+		// 3. Buffer to Hex String (The Pointer Representation)
+		const hashArray = Array.from(new Uint8Array(hashBuffer));                     
+		const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); 
+		
+		return hashHex;
+	}
 
+	const loginForm = document.getElementById('loginForm');
+	
+	loginForm.addEventListener('loginup', async (e) => {
+		e.preventDefault(); // Stop the 'page wipe' interrupt
+		
+		login.password.value=upHash(login.password.value);
+		
+		// 1. Package the bits (Email, Pass, etc.)
+		const formData = new FormData(loginForm);
+		
+		// 2. Transmit to your /login route (handled by your Netlify/Render bridge)
+		const response = await fetch('https://mtmmnfw.netlify.app/login/', {
+			method: 'POST',
+			body: new URLSearchParams(formData)
+		});
+	
+		// 3. The Listener waits here (The 'Wait/Resume' state)
+		const data = await response.json();
+	
+		// 4. Act on the sessionID
+		if (data.sessionID) {
+			// Now you can redirect or update your UI lazily
+			window.location.href = `/otp/${data.sessionID}`;
+		}
+	});
+	
     // Password match validation
     document.getElementById("signupForm").addEventListener("submit", function (e) {
         const password = document.getElementById("password").value;
@@ -192,7 +251,15 @@
             e.preventDefault();
             alert("Passwords do not match!");
         }
+		
+		const hashed=upHash(password.value);
+		password.value=hashed;
+		confirmPassword.value=hashed;
+		form.submit();
+		
     });
+	
+	
 </script>
 
 </body>
