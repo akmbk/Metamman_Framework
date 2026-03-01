@@ -105,7 +105,7 @@
 
     <div class="form-container">
 
-        <form id="loginForm" action="https://mtmmnfw.netlify.app/api/login" method="post">
+        <form id="loginForm">
             <div class="mb-3">
                 <label class="form-label">Account Name</label>
                 <input name="accname" class="form-control" required>
@@ -124,7 +124,7 @@
                 <a href="#" class="toggle-link" onclick="forgotCheck()">Forgot password?</a>
             </div>
 
-            <button type="loginup" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary">Login</button>
 
             <p class="text-center mt-3" style="font-size: 0.9rem;">
                 Don’t have an account? 
@@ -132,15 +132,15 @@
             </p>
         </form>
 
-        <form id="signupForm" class="hidden" action="https://mtmmnfw.netlify.app/api/signup" method="post">
+        <form id="signupForm" class="hidden">
             <div class="mb-3">
                 <label class="form-label">Account Name</label>
-                <input type="text" name="account_name" class="form-control" required>
+                <input id="account_name" name="account_name" class="form-control" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Email</label>
-                <input type="email" name="email" class="form-control" required>
+                <input id="email" name="email" class="form-control" required>
             </div>
 
             <div class="mb-3">
@@ -155,8 +155,9 @@
 
             <div class="mb-3 form-check">
                 <input class="form-check-input" type="checkbox" id="terms" required>
-                <label class="form-label" for="terms" style="margin:0;">
+                <label class="form-label" for="terms" style="margin:0;" required>
                     I agree to the Terms & Conditions
+					<a href="https://mttmnfw.netlify.app/sub_pages/terms/terms.html" class="toggle-link">read more...</a>
                 </label>
             </div>
 
@@ -218,44 +219,56 @@
 
 	const loginForm = document.getElementById('loginForm');
 	
-	loginForm.addEventListener('loginup', async (e) => {
-		e.preventDefault(); // Stop the 'page wipe' interrupt
+	loginForm.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const password=document.getElementById("password");
+		password.value=upHash(password.value);
 		
-		login.password.value=upHash(login.password.value);
-		
-		// 1. Package the bits (Email, Pass, etc.)
 		const formData = new FormData(loginForm);
 		
-		// 2. Transmit to your /login route (handled by your Netlify/Render bridge)
 		const response = await fetch('https://mtmmnfw.netlify.app/api/login', {
 			method: 'POST',
 			body: new URLSearchParams(formData)
 		});
 	
-		// 3. The Listener waits here (The 'Wait/Resume' state)
 		const data = await response.json();
 	
-		// 4. Act on the sessionID
 		if (data.sessionID) {
-			// Now you can redirect or update your UI lazily
 			window.location.href = `/otp/${data.sessionID}`;
 		}
 	});
 	
-    // Password match validation
-    document.getElementById("signupForm").addEventListener("submit", function (e) {
-        const password = document.getElementById("password").value;
+    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+		
+		const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
 
         if (password !== confirmPassword) {
-            e.preventDefault();
             alert("Passwords do not match!");
         }
 		
 		const hashed=upHash(password.value);
 		password.value=hashed;
 		confirmPassword.value=hashed;
-		form.submit();
+		
+		const username = document.getElementById("account_name").value;
+		const emailid = document.getElementById("email").value;
+		
+		e.preventDefault();
+		
+		const jsonbuilder={
+			account_name: username,
+			email: emailid,
+			password: password
+		};
+		
+		await fetch("https://mtmmnfw.netlify.app/api/signup", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json"
+			},
+			body: JSON.stringify(jsonbuilder)
+		});
 		
     });
 	
