@@ -132,7 +132,7 @@
             </p>
         </form>
 
-        <form id="signupForm" class="hidden">
+        <form id="signupForm" onsubmit="signup(event)" class="hidden">
             <div class="mb-3">
                 <label class="form-label">Account Name</label>
                 <input id="account_name" name="account_name" class="form-control" required>
@@ -216,7 +216,7 @@
 		const msgUint8 = new TextEncoder().encode(message);                           
 		
 		// 2. The ALU Operation (SHA-256)
-		const hashBuffer = crypto.subtle.digest('SHA-256', msgUint8);           
+		const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);           
 	
 		// 3. Buffer to Hex String (The Pointer Representation)
 		const hashArray = Array.from(new Uint8Array(hashBuffer));                     
@@ -257,7 +257,9 @@
 		
 	}
 	
-    document.getElementById("signupForm").addEventListener("submit", async function (e) {
+    async function signup(event) {
+		
+		event.preventDefault();
 		
 		const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
@@ -266,14 +268,12 @@
             alert("Passwords do not match!");
         }
 		
-		const hashed=upHash(password.value);
+		const hashed=await upHash(password.value);
 		password.value=hashed;
 		confirmPassword.value=hashed;
 		
 		const username = document.getElementById("account_name").value;
 		const emailid = document.getElementById("email").value;
-		
-		e.preventDefault();
 		
 		const jsonbuilder={
 			account_name: username,
@@ -289,7 +289,7 @@
 			body: JSON.stringify(jsonbuilder)
 		});
 		
-    });
+    }
 	
 </script>
 
