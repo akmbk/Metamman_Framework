@@ -202,9 +202,8 @@
         });
         
         if (response.ok) {
-            const targetPath = await response.text();
-            alert('Please check your email for the OTP');
-            window.location.href = `/api/otp/${targetPath}`;
+            const targetPath=await response.text();
+            alert('Please check your email for the Password reset link...');
         } else {
             alert('Error processing reset request');
         }
